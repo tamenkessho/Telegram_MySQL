@@ -36,7 +36,7 @@ public class Bot extends TelegramLongPollingBot {
 
             } catch (ClassNotFoundException | SQLException | TelegramApiException e) {
                 e.printStackTrace();
-            }
+            }       //exceptions
         }
     }
 
