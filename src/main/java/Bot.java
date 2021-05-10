@@ -24,18 +24,17 @@ public class Bot extends TelegramLongPollingBot {
             try {
                 DataBaseSettings dbs = new DataBaseSettings();
                 Connection connection = DataBase.connect(dbs);
-                Statement statement = connection.createStatement();
+                Statement statement = null;
+                if (connection != null) {
+                    statement = connection.createStatement();
+                }
                 String name = update.getMessage().getFrom().getFirstName();
                 String secondName = update.getMessage().getFrom().getLastName();
-                String phoneNumber = text;
-                statement.executeUpdate("INSERT " + dbs.tableName + "(" + dbs.uc_1 + ", " + dbs.uc_2 + ", " + dbs.uc_3 + ") VALUES ('" + name + "', '" + secondName + "', '" + phoneNumber + "');");
+                assert statement != null;
+                statement.executeUpdate("INSERT " + dbs.tableName + "(" + dbs.uc_1 + ", " + dbs.uc_2 + ", " + dbs.uc_3 + ") VALUES ('" + name + "', '" + secondName + "', '" + text + "');");
                 execute(Answers.send(update,"I successfully created a new row in the table, thank you for participating!"));
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } catch (TelegramApiException e) {
+            } catch (ClassNotFoundException | SQLException | TelegramApiException e) {
                 e.printStackTrace();
             }
         }
